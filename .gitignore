@@ -4,6 +4,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 flask-boris/__pycache__
+__init__.py
 
 # C extensions
 *.so
