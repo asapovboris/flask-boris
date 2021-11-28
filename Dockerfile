@@ -7,6 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy code
 COPY code/ /usr/src/app/
+COPY __init__.py /usr/src/app/restapi/
 
 # Workdir
 WORKDIR /usr/src/app
