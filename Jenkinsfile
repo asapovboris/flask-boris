@@ -24,7 +24,7 @@ pipeline {
         stage('build docker image'){
             steps {
                 dir("${cs_local_folder}") {
-                    sh 'docker build -t "${image_name}" .'
+                    sh 'docker build -t "${image_name}" -f Dockerfile .'
                 }
             }
         }
