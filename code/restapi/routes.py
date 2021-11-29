@@ -4,6 +4,10 @@ from .models import get_user, update_user
 
 user_id = 1
 
+@app.route("/")
+def index():
+    return "Simple Rest API server by Boris Asapov"
+
 @app.route("/api/v1/hello", methods=["GET", "POST", "PUT"])
 def Hello():
     username = get_user(connection, user_id)
