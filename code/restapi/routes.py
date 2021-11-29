@@ -1,6 +1,6 @@
 from flask import request
 from . import app, connection
-from .models import get_user, update_user
+from .models import get_user, update_user, add_user
 
 user_id = 1
 
@@ -26,5 +26,14 @@ def Hello():
             return "username updated to " + username
     else:
         return "hello " + username
+
+@app.route("/api/v1/add-user", methods=["POST"])
+def AddUser():
+    if request.method == 'POST':
+        if not 'Username' in request.json:
+            return "no Username specified in json format"
+        else:
+            add = add_user(connection, request.json['Username'])
+            return add
 
 

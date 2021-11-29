@@ -1,3 +1,4 @@
+import pymysql
 
 def get_user(connection, id):
     with connection.cursor() as cursor:
@@ -16,3 +17,16 @@ def update_user(connection, id, username):
     if connection.commit():
         return 1
     return 0
+
+def add_user(connection, username):
+    sql = "INSERT INTO users (username) VALUES ('" + username + "')"
+    cursor = connection.cursor()
+    try:
+        cursor.execute(sql)
+        connection.commit()
+    except pymysql.err.IntegrityError:
+        return "failed - user " + username + " already exist"
+
+    cursor.execute('SELECT LAST_INSERT_ID() AS id')
+    id = cursor.fetchone()['id']
+    return "user - " + username + " added , id = " + str(id)
