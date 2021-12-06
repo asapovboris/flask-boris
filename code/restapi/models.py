@@ -30,3 +30,16 @@ def add_user(connection, username):
     cursor.execute('SELECT LAST_INSERT_ID() AS id')
     id = cursor.fetchone()['id']
     return "user - " + username + " added , id = " + str(id)
+
+def add_token(connection, apitoken):
+    sql = "INSERT INTO tokens (token, expired) values('" + apitoken + "',date_add(now(),interval 90 day))"
+    cursor = connection.cursor()
+    try:
+        cursor.execute(sql)
+        connection.commit()
+    except pymysql.err.IntegrityError:
+        return "error"
+
+    cursor.execute('SELECT LAST_INSERT_ID() AS id')
+    id = cursor.fetchone()['id']
+    return "added , token id - " + str(id)

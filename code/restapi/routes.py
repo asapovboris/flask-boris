@@ -1,6 +1,6 @@
 from flask import request
-from . import app, connection
-from .models import get_user, update_user, add_user
+from . import app, connection, bcrypt, BcryptPass
+from .models import get_user, update_user, add_user, add_token
 from .tools import check_id_valid, id_generator, check_input
 import simplejson as json
 
@@ -63,3 +63,15 @@ def IDGenerator():
             # return ' '.join(gen)
             list1 = json.dumps((i for i in list(gen)), iterable_as_array=True)
             return list1
+
+@app.route("/api/v1/add-token", methods=["POST"])
+def AddToken():
+    if request.method == 'POST':
+        if not 'bcryptpass' in request.json or request.json['bcryptpass'] != BcryptPass:
+            return "not authorized to perform this action"
+        if not 'token' in request.json or not request.json['token']:
+            return "no token variable specified"
+        else:
+            hashed_password = bcrypt.generate_password_hash(request.json['token']).decode('utf-8')
+            add = add_token(connection, hashed_password)
+            return add
